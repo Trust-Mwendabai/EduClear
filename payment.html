@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Payment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="scripts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Make a Payment</h1>
+        <div class="card">
+            <form action="payment.php" method="POST">
+                <div class="form-group">
+                    <label for="paymentMethod">Select Payment Method</label>
+                    <div class="tooltip">
+                        <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                            <option value="MTN Mobile Money">MTN Mobile Money <i class="fas fa-mobile-alt"></i></option>
+                            <option value="Airtel Money">Airtel Money <i class="fas fa-mobile-alt"></i></option>
+                            <option value="Visa/MasterCard">Visa/MasterCard <i class="fas fa-credit-card"></i></option>
+                        </select>
+                        <span class="tooltiptext">Choose your preferred payment method</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="reference">Payment Reference (if applicable)</label>
+                    <input type="text" class="form-control" id="reference" name="reference">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Payment</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

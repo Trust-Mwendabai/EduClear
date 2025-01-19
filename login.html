@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: #fff;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .btn-primary {
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+        }
+        .btn-primary:hover {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+        .form-control {
+            border-radius: 8px;
+        }
+        .forgot-password-link {
+            display: block;
+            text-align: right;
+        }
+        .register-link {
+            text-align: center;
+        }
+        .register-link a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            color: #2575fc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="max-width: 400px; margin: auto;">
+            <div class="card-header">
+                EduClear Login
+            </div>
+            <div class="card-body">
+                <form action="user.php" method="POST">
+                    <div class="form-group">
+                        <label for="username">Email/Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your email or username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="forgot-password-link">
+                        <a href="password_recovery.html">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
+                </form>
+                <p class="register-link mt-3">Don't have an account? <a href="register.html">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

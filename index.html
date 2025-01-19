@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .nav {
+            gap: 1rem;
+        }
+
+        header .btn {
+            background-color: white;
+            color: #007bff;
+            border: none;
+        }
+
+        header .btn:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, #007bff, #00aaff);
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .hero .btn {
+            margin: 1rem 0.5rem;
+        }
+
+        /* Features Section */
+        #features {
+            padding: 4rem 1rem;
+        }
+
+        #features h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card .btn {
+            margin-top: 1rem;
+        }
+
+        /* How It Works Section */
+        #how-it-works {
+            background-color: #f8f9fa;
+            padding: 4rem 1rem;
+        }
+
+        #how-it-works h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        #how-it-works ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        #how-it-works li {
+            background-color: white;
+            padding: 1rem;
+            margin: 0.5rem auto;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>EduClear</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="#features" class="text-white nav-link">Features</a></li>
+                    <li><a href="#how-it-works" class="text-white nav-link">How It Works</a></li>
+                    <li><a href="#contact" class="text-white nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <a href="login.html" class="btn">Get Started</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Revolutionizing Fee Payments and Clearance for Universities</h2>
+            <p>Streamline operations with secure payments, automated clearance, and real-time updates.</p>
+            <img src="path/to/image.jpg" alt="Student Dashboard">
+            <div>
+                <a href="login.html" class="btn btn-light btn-lg">Get Started Now</a>
+                <a href="#features" class="btn btn-secondary btn-lg">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Online Fee Payment</h5>
+                            <p>Secure payments with MTN Money, Airtel Money, Visa, and Mastercard.</p>
+                            <a href="feature1.html" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Real-Time Clearance</h5>
+                            <p>Download clearance forms instantly after payment verification.</p>
+                            <a href="feature2.html" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Dashboard</h5>
+                            <p>Monitor payments, generate reports, and manage tasks effectively.</p>
+                            <a href="feature3.html" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <ul>
+                <li>Login to Your Dashboard</li>
+                <li>Check Outstanding Balance</li>
+                <li>Make Payments Securely</li>
+                <li>Download Your Clearance Form Instantly</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 EduClear. All rights reserved.</p>
+            <p>Contact us at <a href="mailto:support@educlear.com">support@educlear.com</a></p>
+        </div>
+    </footer>
+</body>
+</html>
