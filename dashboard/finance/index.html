@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Finance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background-color: white;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .nav-link {
+            color: #4b5563;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+
+        .stats-card h3 {
+            color: #4b5563;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .recent-transactions {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">Finance Dashboard</h4>
+        </div>
+        <nav>
+            <a href="#" class="nav-link active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-money-bill"></i> Payments
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-chart-bar"></i> Reports
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-file-invoice"></i> Fee Structure
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="nav-link" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h2 class="mb-0">Financial Overview</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Total Revenue</h3>
+                    <div class="value" id="totalRevenue">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Today's Collections</h3>
+                    <div class="value" id="todayCollections">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Pending Payments</h3>
+                    <div class="value" id="pendingPayments">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Payment Success Rate</h3>
+                    <div class="value" id="successRate">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Revenue Trends</h3>
+                <select class="form-select" style="width: auto;" id="chartPeriod">
+                    <option value="week">Last Week</option>
+                    <option value="month">Last Month</option>
+                    <option value="year">Last Year</option>
+                </select>
+            </div>
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+        <div class="recent-transactions">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Recent Transactions</h3>
+                <button class="btn btn-primary">View All</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Student</th>
+                            <th>Amount</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTable">
+                        <!-- Transactions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Check if user is logged in and is finance officer
+       /* const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'finance_officer') {
+            window.location.href = '/login.html';
+        } */
+
+        // Initialize revenue chart
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        let revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [],
+                    borderColor: '#2563eb',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch('/api/finance/dashboard.php', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboard(data);
+                } else {
+                    console.error('Failed to fetch dashboard data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Update dashboard with data
+        function updateDashboard(data) {
+            document.getElementById('totalRevenue').textContent = `UGX ${data.totalRevenue.toLocaleString()}`;
+            document.getElementById('todayCollections').textContent = `UGX ${data.todayCollections.toLocaleString()}`;
+            document.getElementById('pendingPayments').textContent = `UGX ${data.pendingPayments.toLocaleString()}`;
+            document.getElementById('successRate').textContent = `${data.successRate}%`;
+
+            // Update chart
+            revenueChart.data.labels = data.revenueTrend.labels;
+            revenueChart.data.datasets[0].data = data.revenueTrend.values;
+            revenueChart.update();
+
+            // Update transactions table
+            const transactionsTable = document.getElementById('transactionsTable');
+            transactionsTable.innerHTML = data.recentTransactions.map(transaction => `
+                <tr>
+                    <td>${new Date(transaction.date).toLocaleDateString()}</td>
+                    <td>${transaction.student_name}</td>
+                    <td>UGX ${transaction.amount.toLocaleString()}</td>
+                    <td>${transaction.payment_method}</td>
+                    <td>
+                        <span class="badge bg-${transaction.status === 'completed' ? 'success' : 
+                                          transaction.status === 'pending' ? 'warning' : 'danger'}">
+                            ${transaction.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Handle chart period change
+        document.getElementById('chartPeriod').addEventListener('change', fetchDashboardData);
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        });
+
+        // Initial load
+        fetchDashboardData();
+    </script>
+</body>
+</html>

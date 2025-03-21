@@ -1,0 +1,112 @@
+/* General Styles */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+h1 {
+    color: #0056b3; /* Updated color */
+}
+
+/* Button Styles */
+.btn {
+    background-color: #0056b3; /* Updated color */
+    color: white;
+}
+
+.btn:hover {
+    background-color: #004494; /* Darker shade for hover effect */
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* List Group Styles */
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Hero Section Styles */
+.hero {
+    background: linear-gradient(to right, #007bff, #00aaff);
+    color: white;
+    padding: 50px 20px;
+}
+
+/* Card Styles */
+.card {
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    padding: 20px; /* Added padding for card content */
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Footer Styles */
+.footer {
+    background-color: grey; /* Change to grey */
+    padding: 20px;
+    position: static; /* Ensure footer is static */
+}
+
+.footer .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position above the tooltip */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

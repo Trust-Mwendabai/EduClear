@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background-color: white;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .nav-link {
+            color: #4b5563;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+
+        .stats-card h3 {
+            color: #4b5563;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .recent-payments {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .payment-method-card {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-method-card:hover {
+            background-color: #f8f9fa;
+        }
+        .payment-method-card.selected {
+            border: 2px solid var(--primary-color);
+            background-color: #f8f9fa;
+        }
+        .payment-details {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">EduClear</h4>
+        </div>
+        <nav>
+            <a href="#" class="nav-link active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-money-bill"></i> Payments
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-file-alt"></i> Clearance
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="#" class="nav-link" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h2 class="mb-0">Welcome, <span id="studentName">Student</span></h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>Total Fees</h3>
+                    <div class="value" id="totalFees">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>Amount Paid</h3>
+                    <div class="value" id="amountPaid">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>Balance</h3>
+                    <div class="value" id="balance">UGX 0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-payments">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Recent Payments</h3>
+                <button class="btn btn-primary" data-action="pay">Make Payment</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentsTable">
+                        <!-- Payments will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Make Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-methods">
+                        <h6 class="mb-3">Select Payment Method</h6>
+                        
+                        <!-- Airtel Money -->
+                        <div class="card mb-3 payment-method-card" onclick="selectPaymentMethod('airtel')">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="airtelMoney">
+                                </div>
+                                <i class="fas fa-mobile-alt fa-2x text-danger mx-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Airtel Money</h6>
+                                    <small class="text-muted">Pay using Airtel Money</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MTN Mobile Money -->
+                        <div class="card mb-3 payment-method-card" onclick="selectPaymentMethod('mtn')">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="mtnMoney">
+                                </div>
+                                <i class="fas fa-mobile-alt fa-2x text-warning mx-3"></i>
+                                <div>
+                                    <h6 class="mb-0">MTN Mobile Money</h6>
+                                    <small class="text-muted">Pay using MTN Mobile Money</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bank Transfer -->
+                        <div class="card mb-3 payment-method-card" onclick="selectPaymentMethod('bank')">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="bankTransfer">
+                                </div>
+                                <i class="fas fa-university fa-2x text-primary mx-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Bank Transfer</h6>
+                                    <small class="text-muted">Pay using bank transfer</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Amount -->
+                        <div class="mt-4">
+                            <h6 class="mb-3">Payment Amount</h6>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="paymentAmount" value="500" min="1" max="1500">
+                            </div>
+                        </div>
+
+                        <!-- Payment Details -->
+                        <div id="paymentDetails" class="mt-4" style="display: none;">
+                            <h6 class="mb-3">Payment Instructions</h6>
+                            
+                            <!-- Airtel Money Details -->
+                            <div id="airtelDetails" class="payment-details">
+                                <div class="alert alert-info">
+                                    <h6>Follow these steps:</h6>
+                                    <ol class="mb-0">
+                                        <li>Dial *115#</li>
+                                        <li>Select "Make Payment"</li>
+                                        <li>Enter Business Number: 123456</li>
+                                        <li>Enter Amount: $<span class="payment-amount">500</span></li>
+                                        <li>Enter PIN to confirm</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <!-- MTN Money Details -->
+                            <div id="mtnDetails" class="payment-details">
+                                <div class="alert alert-warning">
+                                    <h6>Follow these steps:</h6>
+                                    <ol class="mb-0">
+                                        <li>Dial *165#</li>
+                                        <li>Select "Make Payment"</li>
+                                        <li>Enter Merchant Code: 654321</li>
+                                        <li>Enter Amount: $<span class="payment-amount">500</span></li>
+                                        <li>Enter PIN to confirm</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <!-- Bank Details -->
+                            <div id="bankDetails" class="payment-details">
+                                <div class="alert alert-primary">
+                                    <h6>Bank Transfer Details:</h6>
+                                    <p class="mb-0">
+                                        <strong>Bank:</strong> EduClear Bank<br>
+                                        <strong>Account Name:</strong> EduClear University<br>
+                                        <strong>Account Number:</strong> 1234567890<br>
+                                        <strong>Branch:</strong> Main Campus<br>
+                                        <strong>Reference:</strong> Your Student ID
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="processPayment()">Confirm Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check if user is logged in
+       /* const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user) {
+            window.location.href = '/login.html';
+        } */
+
+        // Update student name
+        document.getElementById('studentName').textContent = user.username;
+
+        // Fetch student data
+        async function fetchStudentData() {
+            try {
+                const response = await fetch('/api/student/dashboard.php', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboard(data);
+                } else {
+                    console.error('Failed to fetch student data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Update dashboard with data
+        function updateDashboard(data) {
+            document.getElementById('totalFees').textContent = `UGX ${data.totalFees.toLocaleString()}`;
+            document.getElementById('amountPaid').textContent = `UGX ${data.amountPaid.toLocaleString()}`;
+            document.getElementById('balance').textContent = `UGX ${data.balance.toLocaleString()}`;
+
+            const paymentsTable = document.getElementById('paymentsTable');
+            paymentsTable.innerHTML = data.recentPayments.map(payment => `
+                <tr>
+                    <td>${new Date(payment.payment_date).toLocaleDateString()}</td>
+                    <td>UGX ${payment.amount.toLocaleString()}</td>
+                    <td>${payment.payment_method}</td>
+                    <td>
+                        <span class="badge bg-${payment.status === 'completed' ? 'success' : 
+                                          payment.status === 'pending' ? 'warning' : 'danger'}">
+                            ${payment.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        });
+
+        // Initial load
+        fetchStudentData();
+
+        // Make tabs clickable
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = tab.getAttribute('href').substring(1);
+                
+                // Update active tab
+                document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding content (you would need to add content sections with matching IDs)
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = content.id === targetId ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Payment Modal Functions
+        let selectedPaymentMethod = null;
+
+        function openPaymentModal() {
+            const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            modal.show();
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[onclick="selectPaymentMethod('${method}')"]`).classList.add('selected');
+            
+            // Show payment details
+            document.getElementById('paymentDetails').style.display = 'block';
+            document.querySelectorAll('.payment-details').forEach(detail => {
+                detail.style.display = 'none';
+            });
+            document.getElementById(`${method}Details`).style.display = 'block';
+            
+            // Update radio button
+            document.querySelectorAll('[name="paymentMethod"]').forEach(radio => radio.checked = false);
+            document.getElementById(`${method}Money`).checked = true;
+            
+            // Update amount in instructions
+            const amount = document.getElementById('paymentAmount').value;
+            document.querySelectorAll('.payment-amount').forEach(span => {
+                span.textContent = amount;
+            });
+        }
+
+        // Update payment amount when changed
+        document.getElementById('paymentAmount').addEventListener('input', (e) => {
+            const amount = e.target.value;
+            document.querySelectorAll('.payment-amount').forEach(span => {
+                span.textContent = amount;
+            });
+        });
+
+        function processPayment() {
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            const amount = document.getElementById('paymentAmount').value;
+            
+            // Show processing message
+            const message = `Processing payment of $${amount} via ${selectedPaymentMethod.toUpperCase()}...`;
+            alert(message);
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                alert('Payment processed successfully!');
+                // Here you would typically update the UI to reflect the new payment
+                location.reload();
+            }, 2000);
+        }
+
+        // Make all action buttons clickable
+        document.querySelectorAll('button[data-action]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const action = button.getAttribute('data-action');
+                switch(action) {
+                    case 'pay':
+                        openPaymentModal();
+                        break;
+                    case 'download':
+                        alert('Downloading document...');
+                        break;
+                    case 'view':
+                        alert('Opening document viewer...');
+                        break;
+                    default:
+                        alert('Processing action: ' + action);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

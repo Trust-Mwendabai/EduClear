@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --warning-color: #f6c23e;
+        }
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background: #2c3e50;
+            color: white;
+            padding-top: 20px;
+            transition: all 0.3s;
+        }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .nav-link.active {
+            background: #34495e;
+            color: white;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #e9ecef;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        .status-card {
+            background: linear-gradient(45deg, var(--primary-color), #224abe);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="text-center mb-4">
+            <h4>Student Portal</h4>
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="#" data-tab="dashboard-content"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a class="nav-link" href="#" data-tab="clearance-content"><i class="fas fa-file-alt me-2"></i> Clearance Form</a>
+            <a class="nav-link" href="#" data-tab="payments-content"><i class="fas fa-money-bill me-2"></i> Payments</a>
+            <a class="nav-link" href="#" data-tab="history-content"><i class="fas fa-history me-2"></i> History</a>
+            <a class="nav-link" href="#" data-tab="profile-content"><i class="fas fa-user me-2"></i> Profile</a>
+            <a class="nav-link" href="index.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Dashboard Content -->
+            <div id="dashboard-content" class="content active">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Welcome, John Doe</h2>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <button class="btn btn-light" type="button" id="notificationsDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <span class="badge bg-danger">2</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                                <li><a class="dropdown-item" href="#">Payment reminder</a></li>
+                                <li><a class="dropdown-item" href="#">Document submission needed</a></li>
+                            </ul>
+                        </div>
+                        <span class="text-muted">Student ID: STU001</span>
+                    </div>
+                </div>
+
+                <!-- Status Overview -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card status-card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Clearance Status</h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="mb-0">In Progress</h2>
+                                    <div class="text-end">
+                                        <p class="mb-0">Overall Progress</p>
+                                        <h4>75%</h4>
+                                    </div>
+                                </div>
+                                <div class="progress mt-3">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Payment Summary</h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="text-muted mb-1">Total Due</p>
+                                        <h4>$1,500</h4>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <p class="text-muted mb-1">Paid Amount</p>
+                                        <h4 class="text-success">$1,125</h4>
+                                    </div>
+                                </div>
+                                <div class="progress mt-3">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                                </div>
+                                <div class="d-grid mt-3">
+                                    <button class="btn btn-primary">Make Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requirements and Timeline -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Clearance Requirements</h5>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Requirement</th>
+                                                <th>Status</th>
+                                                <th>Due Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Library Clearance</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>Mar 15, 2025</td>
+                                                <td><button class="btn btn-sm btn-info">View</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Department Clearance</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>Mar 20, 2025</td>
+                                                <td><button class="btn btn-sm btn-info">View</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Finance Clearance</td>
+                                                <td><span class="badge bg-warning">Pending</span></td>
+                                                <td>Mar 25, 2025</td>
+                                                <td><button class="btn btn-sm btn-primary">Complete</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hostel Clearance</td>
+                                                <td><span class="badge bg-secondary">Not Started</span></td>
+                                                <td>Mar 30, 2025</td>
+                                                <td><button class="btn btn-sm btn-primary">Start</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Recent Activities</h5>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <small class="text-muted">Today</small>
+                                        <p class="mb-0">Department clearance approved</p>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <small class="text-muted">Yesterday</small>
+                                        <p class="mb-0">Payment of $500 received</p>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <small class="text-muted">Mar 18, 2025</small>
+                                        <p class="mb-0">Library clearance completed</p>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <small class="text-muted">Mar 15, 2025</small>
+                                        <p class="mb-0">Started clearance process</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clearance Content -->
+            <div id="clearance-content" class="content d-none">
+                <h2 class="mb-4">Clearance Form</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-4">Clearance Requirements</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Requirement</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Library Clearance</td>
+                                        <td><span class="badge bg-success">Completed</span></td>
+                                        <td>Mar 15, 2025</td>
+                                        <td><button class="btn btn-sm btn-info">View Details</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Department Clearance</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td>Mar 20, 2025</td>
+                                        <td><button class="btn btn-sm btn-primary">Submit</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Content -->
+            <div id="payments-content" class="content d-none">
+                <h2 class="mb-4">Payment History</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mar 15, 2025</td>
+                                        <td>Tuition Fee</td>
+                                        <td>$500</td>
+                                        <td><span class="badge bg-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mar 10, 2025</td>
+                                        <td>Library Fee</td>
+                                        <td>$50</td>
+                                        <td><span class="badge bg-success">Completed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Content -->
+            <div id="history-content" class="content d-none">
+                <h2 class="mb-4">Activity History</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <small class="text-muted">Mar 20, 2025</small>
+                                <p class="mb-0">Submitted Department Clearance Form</p>
+                            </div>
+                            <div class="timeline-item">
+                                <small class="text-muted">Mar 15, 2025</small>
+                                <p class="mb-0">Completed Library Clearance</p>
+                            </div>
+                            <div class="timeline-item">
+                                <small class="text-muted">Mar 10, 2025</small>
+                                <p class="mb-0">Made Payment: Library Fee</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profile-content" class="content d-none">
+                <h2 class="mb-4">Student Profile</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> John Doe</p>
+                                <p><strong>Student ID:</strong> STU001</p>
+                                <p><strong>Email:</strong> john.doe@example.com</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Program:</strong> Computer Science</p>
+                                <p><strong>Year:</strong> 4th Year</p>
+                                <p><strong>Status:</strong> Active</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Make tabs clickable
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (!link.getAttribute('href').includes('index.html')) { // Skip logout link
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and hide all content
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll('.content').forEach(c => c.classList.add('d-none'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    const content = document.getElementById(tabId);
+                    if (content) {
+                        content.classList.remove('d-none');
+                    }
+                });
+            }
+        });
+
+        // Make action buttons clickable
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                alert(`Action: ${action}`);
+            });
+        });
+    </script>
+</body>
+</html>

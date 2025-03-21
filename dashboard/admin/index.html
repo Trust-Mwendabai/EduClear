@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClear - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background-color: white;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .nav-link {
+            color: #4b5563;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+
+        .stats-card h3 {
+            color: #4b5563;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .recent-activity {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">EduClear Admin</h4>
+        </div>
+        <nav>
+            <a href="#" class="nav-link active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-users"></i> Students
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-money-bill"></i> Payments
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-file-alt"></i> Clearance
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="nav-link" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h2 class="mb-0">Admin Dashboard</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Total Students</h3>
+                    <div class="value" id="totalStudents">0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Total Payments</h3>
+                    <div class="value" id="totalPayments">UGX 0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Pending Clearance</h3>
+                    <div class="value" id="pendingClearance">0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>Active Users</h3>
+                    <div class="value" id="activeUsers">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">Recent Activity</h3>
+                <button class="btn btn-primary">View All</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Student</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activityTable">
+                        <!-- Activity will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Make tabs clickable
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = tab.getAttribute('href').substring(1);
+                
+                // Update active tab
+                document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding content (you would need to add content sections with matching IDs)
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = content.id === targetId ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Make action buttons clickable
+        document.querySelectorAll('button[data-action]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const action = button.getAttribute('data-action');
+                switch(action) {
+                    case 'approve':
+                        alert('Approving request...');
+                        break;
+                    case 'reject':
+                        alert('Rejecting request...');
+                        break;
+                    case 'view':
+                        alert('Opening document viewer...');
+                        break;
+                    default:
+                        alert('Processing action: ' + action);
+                }
+            });
+        });
+
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                // Simulated data - in a real app, this would come from your backend
+                const data = {
+                    totalStudents: 1250,
+                    pendingRequests: 45,
+                    completedRequests: 180,
+                    recentActivity: [
+                        { student: "John Doe", action: "Submitted clearance request", time: "2 hours ago" },
+                        { student: "Jane Smith", action: "Updated documents", time: "3 hours ago" },
+                        { student: "Mike Johnson", action: "Completed clearance", time: "5 hours ago" }
+                    ]
+                };
+
+                // Update dashboard stats
+                document.getElementById('totalStudents').textContent = data.totalStudents;
+                document.getElementById('totalPayments').textContent = `UGX ${data.pendingRequests}`;
+                document.getElementById('pendingClearance').textContent = data.completedRequests;
+
+                // Update recent activity
+                const activityTable = document.getElementById('activityTable');
+                activityTable.innerHTML = data.recentActivity.map(activity => `
+                    <tr>
+                        <td>${activity.time}</td>
+                        <td>${activity.student}</td>
+                        <td>${activity.action}</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        });
+
+        // Initial load
+        fetchDashboardData();
+    </script>
+</body>
+</html>
